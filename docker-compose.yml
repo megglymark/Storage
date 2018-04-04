@@ -1,0 +1,30 @@
+version: '3'
+services:
+        web:
+                container_name: 'storage'
+                image: 'storage'
+                build: 
+                        context: .
+                        dockerfile: Dockerfile
+                ports:
+                - "5000:5000"
+                volumes:
+                - .:/app/src
+                depends_on:
+                - "postgres"
+                networks:
+                - storage-network
+
+        postgres:
+                container_name: 'postgres'
+                image: postgres
+                environment:
+                        POSTGRES_PASSWORD: password
+                ports:
+                - "5432:5432"
+                networks:
+                - storage-network
+
+networks:
+        storage-network:
+                driver: bridge
